@@ -1,8 +1,55 @@
   # Configure keymap in X11
-  services.xserver.layout = "us,ru";
-  services.xserver.xkbOptions = "grp:caps_toggle,ctrl:menu_rctrl";
+  services.xserver = {
+    layout = "us,ru,ge";
+    xkbVariant = "";
+    xkbOptions = "grp:caps_toggle";
+    # run the following command and restart Gnome to bring xkbOptions to it:
+    # $ gsettings get org.gnome.desktop.input-sources xkb-options
+  };
 
-  # List packages installed in system profile.
+  # Define extra file systems and mount points
+  fileSystems."/store" = {
+    device = "/dev/sdb1";
+    fsType = "ext4";
+    options = [ "nofail" ];
+  };
+
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users.user1 = {
+    isNormalUser = true;
+    uid = 1000;
+    description = "Name";
+    extraGroups = [ "networkmanager" "wheel" ];
+    packages = with pkgs; [
+      firefox
+      jetbrains.idea-community
+      thunderbird
+      tdesktop
+      zoom-us
+      krita
+      libreoffice
+      write_stylus
+      gitg
+      #rawtherapee
+      #darktable
+      #shotcut
+      #transmission-gtk
+      (import ./vim.nix)
+    ];
+  };
+  users.users.user2 = {
+    isNormalUser = true;
+    uid = 1001;
+    description = "Name";
+    packages = with pkgs; [
+    ];
+  };
+
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
+
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
   environment.systemPackages = with pkgs;
     let
       my-python-packages = python-packages: with python-packages; [
@@ -15,45 +62,30 @@
       python-with-my-packages = python3.withPackages my-python-packages;
     in [
       vim
-      htop
       git
+      htop
+      imagemagick
+      ffmpeg
+      pdftk
+      python310Packages.markdown
+      libertine
+      ntfs3g
+      texlive.combined.scheme-full
+      python-with-my-packages
       gcc
       gdb
-      rustc
-      cargo
-      python-with-my-packages
-      stack
-      texlive.combined.scheme-full
       gnumake
       cmake
+      clang
+      rustc
+      cargo
+      stack
+      jdk
+      sbt
+      scala
       openmpi
       hdf5
       doxygen
-      python38Packages.markdown
-      jetbrains.idea-community
-      jdk
-      kotlin
-      sbt
-      clang
-      gradle
-      libertine
-      gitg
-      firefox
-      #torbrowser
-      thunderbird
-      tdesktop
-      zoom-us
-      libreoffice
-      transmission-gtk
-      ntfs3g
-      write_stylus
-      krita
-      rawtherapee
-      imagemagick
-      pdftk
-      darktable
-      ffmpeg
-      shotcut
     ];
 
   # List services that you want to enable:
