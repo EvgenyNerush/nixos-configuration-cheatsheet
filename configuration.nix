@@ -88,6 +88,10 @@
       doxygen
     ];
 
+  # Enable the OpenSSH daemon.
+  services.openssh.enable = true;
+  services.openssh.forwardX11 = true;
+
   # List services that you want to enable:
   services.dbus.packages = [ pkgs.networkmanager pkgs.strongswanNM ];
   networking.networkmanager = {
