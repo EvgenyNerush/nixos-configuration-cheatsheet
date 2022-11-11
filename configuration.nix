@@ -83,10 +83,16 @@
       jdk
       sbt
       scala
+      clojure
       openmpi
       hdf5
       doxygen
     ];
+
+    fonts.fonts = with pkgs; [
+      libertine
+    ];
+
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
