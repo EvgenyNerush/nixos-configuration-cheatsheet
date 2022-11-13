@@ -2,7 +2,7 @@
   services.xserver = {
     layout = "us,ru,ge";
     xkbVariant = "";
-    xkbOptions = "grp:caps_toggle";
+    xkbOptions = "grp:caps_toggle,ctrl:menu_rctrl";
     # run the following command and restart Gnome to bring xkbOptions to it:
     # $ gsettings get org.gnome.desktop.input-sources xkb-options
   };
@@ -23,6 +23,7 @@
     packages = with pkgs; [
       firefox
       jetbrains.idea-community
+      visualvm
       thunderbird
       tdesktop
       zoom-us
@@ -58,6 +59,7 @@
         ipython
         pandas
         plotly
+        python310Packages.scipy
       ];
       python-with-my-packages = python3.withPackages my-python-packages;
     in [
