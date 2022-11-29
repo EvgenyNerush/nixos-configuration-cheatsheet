@@ -22,6 +22,7 @@
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       firefox
+      chromium
       jetbrains.idea-community
       visualvm
       vscode
