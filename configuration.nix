@@ -24,6 +24,7 @@
       firefox
       jetbrains.idea-community
       visualvm
+      vscode
       thunderbird
       tdesktop
       zoom-us
@@ -59,7 +60,7 @@
         ipython
         pandas
         plotly
-        python310Packages.scipy
+        scipy
       ];
       python-with-my-packages = python3.withPackages my-python-packages;
     in [
@@ -70,7 +71,6 @@
       ffmpeg
       pdftk
       python310Packages.markdown
-      libertine
       ntfs3g
       texlive.combined.scheme-full
       python-with-my-packages
@@ -93,6 +93,8 @@
 
     fonts.fonts = with pkgs; [
       libertine
+      fira-code
+      jetbrains-mono
     ];
 
 
