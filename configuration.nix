@@ -14,6 +14,16 @@
     options = [ "nofail" ];
   };
 
+  # Enable CUPS to print documents.
+  services.printing.enable = true;
+
+  # Enable sound.
+  sound.enable = true;
+  hardware.pulseaudio.enable = true;
+
+  # Enable touchpad support (enabled default in most desktopManager).
+  #services.xserver.libinput.enable = true;
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.user1 = {
     isNormalUser = true;
@@ -22,13 +32,14 @@
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       firefox
-      chromium
+      #chromium
       jetbrains.idea-community
-      visualvm
+      #visualvm
       vscode
       thunderbird
       tdesktop
-      zoom-us
+      #zoom-us
+      #slack
       krita
       libreoffice
       write_stylus
@@ -37,6 +48,8 @@
       #darktable
       #shotcut
       #transmission-gtk
+      lean
+      elan
       (import ./vim.nix)
     ];
   };
@@ -62,6 +75,7 @@
         pandas
         plotly
         scipy
+        markdown
       ];
       python-with-my-packages = python3.withPackages my-python-packages;
     in [
@@ -71,7 +85,6 @@
       imagemagick
       ffmpeg
       pdftk
-      python310Packages.markdown
       ntfs3g
       texlive.combined.scheme-full
       python-with-my-packages
@@ -82,28 +95,48 @@
       clang
       rustc
       cargo
-      stack
+      zig
       jdk
       sbt
       scala
       clojure
-      openmpi
-      hdf5
-      doxygen
+      ghc
+      stack
+      cabal-install
+      #openmpi
+      #hdf5
+      #doxygen
+      #gnomeExtensions.wireguard-vpn-extension
     ];
 
     fonts.fonts = with pkgs; [
       libertine
       fira-code
       jetbrains-mono
+      martian-mono
     ];
 
+
+  # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   services.openssh.forwardX11 = true;
+  # for wireguard
+  networking.firewall = {
+    # if packets are still dropped, they will show up in dmesg
+    logReversePathDrops = true;
+    # wireguard trips rpfilter up
+    extraCommands = ''
+      ip46tables -t mangle -I nixos-fw-rpfilter -p udp -m udp --sport 51820 -j RETURN
+      ip46tables -t mangle -I nixos-fw-rpfilter -p udp -m udp --dport 51820 -j RETURN
+    '';
+    extraStopCommands = ''
+      ip46tables -t mangle -D nixos-fw-rpfilter -p udp -m udp --sport 51820 -j RETURN || true
+      ip46tables -t mangle -D nixos-fw-rpfilter -p udp -m udp --dport 51820 -j RETURN || true
+    '';
+  };
 
-  # List services that you want to enable:
   services.dbus.packages = [ pkgs.networkmanager pkgs.strongswanNM ];
   networking.networkmanager = {
     enable = true;

@@ -31,8 +31,7 @@ set termguicolors
 " turn syntax highlighting on
 syntax on
 " color scheme
-let ayucolor="light"  " for light version of theme
-colorscheme ayu
+colorscheme afterglow
 " highlight current line with colors
 set cursorline
 " show the cursor (line, column) at the bottom right corner
@@ -89,26 +88,19 @@ autocmd filetype python setlocal makeprg=python3
 map <F2> :setlocal spell! spelllang=en <CR>
 
 " use F3 to change the colorscheme, for the colorschemes used see
-" https://github.com/romainl/Apprentice
-" https://github.com/wimstefan/Lightning
-" https://github.com/ayu-theme/ayu-vim
-" All of them can be found in awesome-vim-colorschemes package
 " https://github.com/rafi/awesome-vim-colorschemes/
-map <silent> <F3> :if g:colors_name == "apprentice" <bar> let ayucolor = "mirage" <bar> colorscheme ayu
-  \ <bar> elseif g:colors_name == "ayu" && ayucolor == "mirage" <bar> let ayucolor = "light" <bar> colorscheme ayu
-  \ <bar> elseif g:colors_name == "ayu" && ayucolor == "light" <bar> colorscheme lightning
-  \ <bar> elseif g:colors_name == "lightning" <bar> colorscheme apprentice
+map <silent> <F3> :if g:colors_name == "afterglow" <bar> colorscheme anderson
+  \ <bar> elseif g:colors_name == "anderson" <bar> colorscheme lightning
+  \ <bar> elseif g:colors_name == "lightning" <bar> set background=light <bar> let g:two_firewatch_italics=1 <bar> colorscheme two-firewatch
+  \ <bar> elseif g:colors_name == "two-firewatch" <bar> colorscheme afterglow
   \ <bar> endif <CR>
 
         " The end of vimrc content
     '';
     # Use the default plugin list shipped with nixpkgs
-    vimrcConfig.vam.knownPlugins = pkgs.vimPlugins;
-    vimrcConfig.vam.pluginDictionaries = [
-        { names = [
-            # Here you can place all your vim plugins
-            # They are installed managed by `vam` (a vim plugin manager)
-            "awesome-vim-colorschemes"
-        ]; }
-    ];
+    vimrcConfig.packages.myplugins = with pkgs.vimPlugins; {
+      # Here you can place all your vim plugins
+      start = [ awesome-vim-colorschemes ];
+      opt = [];
+    };
 }
