@@ -33,6 +33,7 @@
     packages = with pkgs; [
       firefox
       #chromium
+      tor-browser-bundle-bin
       jetbrains.idea-community
       #visualvm
       vscode
@@ -103,10 +104,13 @@
       ghc
       stack
       cabal-install
+      elmPackages.elm
       #openmpi
       #hdf5
       #doxygen
       #gnomeExtensions.wireguard-vpn-extension
+      jq
+      xray
     ];
 
     fonts.fonts = with pkgs; [
